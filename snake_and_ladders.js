@@ -46,26 +46,26 @@ function climbLadderFrom(position) {
   }
 }
 
-function isScoreExceeding(score) {
-  return score > 100;
+function isScoreExceeding(position) {
+  return position > 100;
 }
 
-function getScore(score) {
+function getScore(position) {
 
-  if (isSnakeFoundAt(score)) {
-    playerScore = moveToSnakeTailFrom(score);
+  if (isSnakeFoundAt(position)) {
+    playerScore = moveToSnakeTailFrom(position);
     console.log("snake bite 🐍, now you are at:", playerScore);
     return playerScore;
   }
 
-  if (isLadderFoundAt(score)) {
-    playerScore = climbLadderFrom(score);
+  if (isLadderFoundAt(position)) {
+    playerScore = climbLadderFrom(position);
     console.log("climbed ladder 🪜, now you are at:", playerScore);
     return playerScore;
   }
 
-  console.log("your score is", score);
-  return score;
+  console.log("your score is", position);
+  return position;
 }
 
 function rollDice(playerScore) {
