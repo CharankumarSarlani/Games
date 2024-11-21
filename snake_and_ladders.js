@@ -46,76 +46,76 @@ function climbLadderFrom(position) {
   }
 }
 
-function isScoreExceeding(position) {
+function isPositionExceeding(position) {
   return position > 100;
 }
 
-function getScore(position) {
+function getPosition(position) {
 
   if (isSnakeFoundAt(position)) {
-    playerScore = moveToSnakeTailFrom(position);
-    console.log("snake bite 🐍, now you are at:", playerScore);
-    return playerScore;
+    playerPosition = moveToSnakeTailFrom(position);
+    console.log("snake bite 🐍, now you are at:", playerPosition);
+    return playerPosition;
   }
 
   if (isLadderFoundAt(position)) {
-    playerScore = climbLadderFrom(position);
-    console.log("climbed ladder 🪜, now you are at:", playerScore);
-    return playerScore;
+    playerPosition = climbLadderFrom(position);
+    console.log("climbed ladder 🪜, now you are at:", playerPosition);
+    return playerPosition;
   }
 
-  console.log("your score is", position);
+  console.log("your Position is", position);
   return position;
 }
 
-function rollDice(playerScore) {
+function rollDice(playerPosition) {
   const diceNumber = Math.ceil(Math.random() * 6);
   console.log("dice number, p1:", diceNumber);
 
-  playerScore += diceNumber;
+  playerPosition += diceNumber;
 
-  if (isScoreExceeding(playerScore)) {
-    console.log("your score is exceeding", playerScore);
-    playerScore -= diceNumber;
-    console.log("currently you are at ", playerScore);
-    return playerScore;
+  if (isPositionExceeding(playerPosition)) {
+    console.log("your Position is exceeding", playerPosition);
+    playerPosition -= diceNumber;
+    console.log("currently you are at ", playerPosition);
+    return playerPosition;
   }
 
-  return getScore(playerScore);
+  return getPosition(playerPosition);
 }
 
-function __play(playerOneScore, playerTwoScore) {
+function __play(playerOnePosition, playerTwoPosition) {
   const P1 = prompt("Roll the dice for P1");
   if (!P1) {
-    playerOneScore = rollDice(playerOneScore);
+    playerOnePosition = rollDice(playerOnePosition);
   }
-
+  
   const P2 = prompt("\nRoll the dice for P2");
   if (!P2) {
-    playerTwoScore = rollDice(playerTwoScore);
+    playerTwoPosition = rollDice(playerTwoPosition);
   }
-
-  if (playerOneScore === 100) {
+  
+  if (playerOnePosition === 100) {
     console.log("player 1 won");
   }
 
-  if (playerTwoScore === 100) {
+  if (playerTwoPosition === 100) {
     console.log("player 2 won");
   }
 
-  if (playerOneScore != 100 && playerTwoScore != 100) {
+  if (playerOnePosition != 100 && playerTwoPosition != 100) {
     console.log("------------------------------------------------");
-    return __play(playerOneScore, playerTwoScore);
+    return __play(playerOnePosition, playerTwoPosition);
   }
 }
 
 function play() {
-  const playerOneScore = 0;
-  const playerTwoScore = 0;
-  return __play(playerOneScore, playerTwoScore);
+  const playerOnePosition = 0;
+  const playerTwoPosition = 0;
+  return __play(playerOnePosition, playerTwoPosition);
 }
 
-let playerScore = 0;
+let playerPosition = 0;
 
 console.log("🐍's and 🪜's\n");
 play();
