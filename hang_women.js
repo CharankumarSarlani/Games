@@ -1,5 +1,3 @@
-const answer = "rhythm";
-
 function hangingMan(chances) {
   let manStructure = "";
   manStructure = " _______\n";
@@ -87,6 +85,7 @@ function saveMan(chance) {
   }
 }
 
+const answer = "rhythm";
 function isAnswerCorrect(userInput, answer) {
   return answer === userInput;
 }
