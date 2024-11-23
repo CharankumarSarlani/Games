@@ -1,7 +1,6 @@
 let playerXCoordinate = 0;
 let playerYCoordinate = 0;
 
-// unneccesarily running loop along PATH variable.
 function isInCorrectPath(playerXCoordinate, playerYCoordinate) {
   const PATH = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
 
