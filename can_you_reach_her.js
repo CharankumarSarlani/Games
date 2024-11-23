@@ -1,5 +1,5 @@
-let playerXCoordinate = 0;
-let playerYCoordinate = 0;
+let playerXCoordinate = 8;
+let playerYCoordinate = 9;
 
 function isInCorrectPath(playerXCoordinate, playerYCoordinate) {
   const PATH = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
@@ -17,11 +17,16 @@ function isInCorrectPath(playerXCoordinate, playerYCoordinate) {
   return false;
 }
 
-function getChar(row, column) {
+function isInLastPosition(row, column) {
   const LAST_INDEX = 9;
 
-  return row === LAST_INDEX && column === LAST_INDEX ? "👩‍🦰" : "🟦";
+  return row === LAST_INDEX && column === LAST_INDEX;
 }
+
+let PLAYER_ICON = "🧑‍🦰";
+const GRID_TILE = "🟦";
+const BOMB_ICON = "😹";
+let DESTINATION_ICON = "👩‍🦰";
 
 // function is too lengthy!!
 function createGameBoard(playerXCoordinate, playerYCoordinate) {
@@ -32,11 +37,11 @@ function createGameBoard(playerXCoordinate, playerYCoordinate) {
       if (row === playerXCoordinate && column === playerYCoordinate) {
 
         string += isInCorrectPath(playerXCoordinate, playerYCoordinate) ?
-          "🧑‍🦰" : "😹";
+          PLAYER_ICON : BOMB_ICON;
         continue;
       }
 
-      string += getChar(row, column);
+      string += isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
     }
 
     string += addEscapeSequences("\n", 1);
@@ -106,17 +111,31 @@ function handleInvalidInput() {
   validatePlayerInput();
 }
 
-function playCanYouReachHer() {
+function gameResult(resultMessage) {
+  console.clear();
+
+  DESTINATION_ICON = "💖";
+  PLAYER_ICON = GRID_TILE;
+  printResettedBoard();
+  console.log(resultMessage);
+}
+
+function CanYouReachHer() {
   let movement = "";
+
   for (let movesLeft = 100; movesLeft > 0; movesLeft--) {
     __play(movement);
     console.log("MOVES LEFT:", movesLeft);
+
+    if (isInLastPosition(playerXCoordinate, playerYCoordinate)) {
+      return gameResult("🎊 YOU REACHED HER 🎉");
+    }
 
     movement = validatePlayerInput();
     console.clear();
   }
 
-  console.log("YOU LOST HER 💔");
+  return gameResult("YOU LOST HER 💔");
 }
 
 // animation segment
@@ -158,5 +177,5 @@ function playAnimation() {
   getLoadingAnimation(message);
 }
 
-playAnimation();
-playCanYouReachHer();
+// playAnimation();
+CanYouReachHer();
