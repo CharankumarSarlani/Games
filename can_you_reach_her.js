@@ -18,7 +18,7 @@ function isInCorrectPath(playerXCoordinate, playerYCoordinate) {
   return false;
 }
 
-function getGridTile(row, column) {
+function getChar(row, column) {
   const LAST_INDEX = 9;
 
   return row === LAST_INDEX && column === LAST_INDEX ? "👩‍🦰" : "🟦";
@@ -37,7 +37,7 @@ function createGameBoard(playerXCoordinate, playerYCoordinate) {
         continue;
       }
 
-      string += getGridTile(row, column);
+      string += getChar(row, column);
     }
 
     string += addEscapeSequences("\n", 1);
@@ -69,11 +69,11 @@ function __play(movement) {
 
   printGameBoard();
   if (!isInCorrectPath(playerXCoordinate, playerYCoordinate)) {
-    printResettedTable();
+    printResettedBoard();
   }
 }
 
-function printResettedTable() {
+function printResettedBoard() {
   playerXCoordinate = 0;
   playerYCoordinate = 0;
   wait(5);
@@ -107,7 +107,7 @@ function handleInvalidInput() {
   validatePlayerInput();
 }
 
-function play() {
+function playCanYouReachHer() {
   let movement = "";
   for (let movesLeft = 100; movesLeft > 0; movesLeft--) {
     __play(movement);
@@ -160,4 +160,4 @@ function playAnimation() {
 }
 
 playAnimation();
-play();
+playCanYouReachHer();
