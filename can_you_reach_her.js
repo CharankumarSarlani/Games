@@ -56,19 +56,27 @@ function addEscapeSequences(escapeSequence, times) {
   return escapeSeqString;
 }
 
+function getHorizontalLine(column, row, width, gameBoard, icon) {
+
+  if (column > width - 2) {
+    icon = isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
+    return icon;
+  }
+
+  if (row === playerXCoordinate && column === playerYCoordinate) {
+    icon = isInCorrectPath() ? PLAYER_ICON : BOMB_ICON;
+    
+    return icon + getHorizontalLine(column + 1, row, width, gameBoard);
+  }
+
+  return GRID_TILE + getHorizontalLine(column + 1, row, width, gameBoard);
+}
+
 function createGameBoard(height, width) {
   let gameBoard = addEscapeSequences("\n", 1);
 
   for (let row = 0; row < height; row++) {
-    for (let column = 0; column < width; column++) {
-      if (row === playerXCoordinate && column === playerYCoordinate) {
-
-        gameBoard += isInCorrectPath() ? PLAYER_ICON : BOMB_ICON;
-        continue;
-      }
-
-      gameBoard += isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
-    }
+    gameBoard += getHorizontalLine(0, row, width, gameBoard, "");
 
     gameBoard += addEscapeSequences("\n", 1);
   }
@@ -208,5 +216,5 @@ function playAnimation() {
   getLoadingAnimation(message);
 }
 
-playAnimation();
+// playAnimation();
 game();
