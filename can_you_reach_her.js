@@ -159,7 +159,6 @@ function gameResult(resultMessage, status) {
 }
 
 function __game(movesLeft, movement) {
-
   if (movesLeft === 0) {
     return gameResult("YOU LOST HER 💔", 0);
   }
