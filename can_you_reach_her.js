@@ -2,7 +2,7 @@ let playerXCoordinate = 0;
 let playerYCoordinate = 0;
 
 function repeat(string, times) {
-  if(times === 0) {
+  if (times === 0) {
     return "";
   }
 
@@ -10,7 +10,7 @@ function repeat(string, times) {
 }
 
 function getRandomIntInRange(start, end) {
-  return Math.floor(Math.random() * (end - start)) + start;
+  return Math.floor(Math.random() * ((end + 1) - start)) + start;
 }
 
 function getRandomPath() {
@@ -64,7 +64,7 @@ function getHorizontalLine(column, row, width, gameBoard, icon) {
 
   if (row === playerXCoordinate && column === playerYCoordinate) {
     icon = isInCorrectPath() ? PLAYER_ICON : BOMB_ICON;
-    
+
     return icon + getHorizontalLine(column + 1, row, width, gameBoard);
   }
 
@@ -159,6 +159,7 @@ function gameResult(resultMessage, status) {
 }
 
 function __game(movesLeft, movement) {
+
   if (movesLeft === 0) {
     return gameResult("YOU LOST HER 💔", 0);
   }
