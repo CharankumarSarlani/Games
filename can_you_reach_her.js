@@ -1,5 +1,5 @@
-let playerXCoordinate = 9;
-let playerYCoordinate = 8;
+let playerXCoordinate = 0;
+let playerYCoordinate = 0;
 
 function getRandomIntInRange(start, end) {
   return Math.floor(Math.random() * ((end + 1) - start)) + start;
