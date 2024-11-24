@@ -1,12 +1,20 @@
 let playerXCoordinate = 0;
 let playerYCoordinate = 0;
 
+function repeat(string, times) {
+  if(times === 0) {
+    return "";
+  }
+
+  return string + repeat(string, times - 1);
+}
+
 function getRandomIntInRange(start, end) {
-  return Math.floor(Math.random() * ((end + 1) - start)) + start;
+  return Math.floor(Math.random() * (end - start)) + start;
 }
 
 function getRandomPath() {
-  const PATH1 = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
+  const PATH1 = "00-01-02-03-13-23-24-34-44-54-64-65d-66-67-68-78-79-89-99";
   const PATH2 = "00-10-11-12-13-14-15-25-26-36-35-45-55-65-75-85-95-96-97-98-99"
   const PATH3 = "00-10-20-21-31-32-42-52-62-63-73-74-84-83-93-94-95-96-97-98-99"
 
@@ -47,15 +55,6 @@ const GRID_TILE = "🟦";
 const BOMB_ICON = "😹";
 let DESTINATION_ICON = "👩‍🦰";
 
-function addEscapeSequences(escapeSequence, times) {
-  let escapeSeqString = "";
-  for (let index = 0; index < times; index++) {
-    escapeSeqString += escapeSequence;
-  }
-
-  return escapeSeqString;
-}
-
 function getHorizontalLine(column, row, width, gameBoard, icon) {
 
   if (column > width - 2) {
@@ -73,12 +72,12 @@ function getHorizontalLine(column, row, width, gameBoard, icon) {
 }
 
 function createGameBoard(height, width) {
-  let gameBoard = addEscapeSequences("\n", 1);
+  let gameBoard = repeat("\n", 1);
 
   for (let row = 0; row < height; row++) {
     gameBoard += getHorizontalLine(0, row, width, gameBoard, "");
 
-    gameBoard += addEscapeSequences("\n", 1);
+    gameBoard += repeat("\n", 1);
   }
 
   return gameBoard;
@@ -211,7 +210,7 @@ function getLoadingAnimation(message) {
 }
 
 function playAnimation() {
-  const message = addEscapeSequences("\n", 13) + addEscapeSequences("\t", 2) +
+  const message = repeat("\n", 13) + repeat("\t", 2) +
     "LOADING GAME ASSETS";
   getLoadingAnimation(message);
 }
