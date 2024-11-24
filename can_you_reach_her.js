@@ -216,5 +216,5 @@ function playAnimation() {
   getLoadingAnimation(message);
 }
 
-// playAnimation();
+playAnimation();
 game();
