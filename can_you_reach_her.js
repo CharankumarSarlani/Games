@@ -1,8 +1,27 @@
-let playerXCoordinate = 8;
-let playerYCoordinate = 9;
+let playerXCoordinate = 9;
+let playerYCoordinate = 8;
 
-function isInCorrectPath(playerXCoordinate, playerYCoordinate) {
-  const PATH = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
+function getRandomIntInRange(start, end) {
+  return Math.floor(Math.random() * ((end + 1) - start)) + start;
+}
+
+function getRandomPath() {
+  const PATH1 = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
+  const PATH2 = "00-10-11-12-13-14-15-25-26-36-35-45-55-65-75-85-95-96-97-98-99"
+  const PATH3 = "00-10-20-21-31-32-42-52-62-63-73-74-84-83-93-94-95-96-97-98-99"
+
+  const number = getRandomIntInRange(1, 3);
+
+  switch (number) {
+    case 1: return PATH1;
+    case 2: return PATH2;
+    case 3: return PATH3;
+  }
+}
+
+const PATH = getRandomPath();
+
+function isInCorrectPath() {
 
   for (let position = 0; position < PATH.length; position++) {
     if (PATH[position] === "-")
@@ -28,30 +47,40 @@ const GRID_TILE = "🟦";
 const BOMB_ICON = "😹";
 let DESTINATION_ICON = "👩‍🦰";
 
-// function is too lengthy!!
-function createGameBoard(playerXCoordinate, playerYCoordinate) {
-  let string = addEscapeSequences("\n", 1);
+function addEscapeSequences(escapeSequence, times) {
+  let escapeSeqString = "";
+  for (let index = 0; index < times; index++) {
+    escapeSeqString += escapeSequence;
+  }
 
-  for (let row = 0; row < 10; row++) {
-    for (let column = 0; column < 10; column++) {
+  return escapeSeqString;
+}
+
+function createGameBoard(height, width) {
+  let gameBoard = addEscapeSequences("\n", 1);
+
+  for (let row = 0; row < height; row++) {
+    for (let column = 0; column < width; column++) {
       if (row === playerXCoordinate && column === playerYCoordinate) {
 
-        string += isInCorrectPath(playerXCoordinate, playerYCoordinate) ?
-          PLAYER_ICON : BOMB_ICON;
+        gameBoard += isInCorrectPath() ? PLAYER_ICON : BOMB_ICON;
         continue;
       }
 
-      string += isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
+      gameBoard += isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
     }
 
-    string += addEscapeSequences("\n", 1);
+    gameBoard += addEscapeSequences("\n", 1);
   }
 
-  return string;
+  return gameBoard;
 }
 
 function printGameBoard() {
-  console.log(createGameBoard(playerXCoordinate, playerYCoordinate));
+  const height = 10;
+  const width = 10;
+
+  console.log(createGameBoard(height, width));
 }
 
 function getPosition(direction, position) {
@@ -63,7 +92,7 @@ function getPosition(direction, position) {
 }
 
 // change function name!!
-function __play(movement) {
+function printPlayerMovements(movement) {
   switch (movement) {
     case 's': playerXCoordinate = getPosition("s", playerXCoordinate); break;
     case 'w': playerXCoordinate = getPosition("w", playerXCoordinate); break;
@@ -72,17 +101,24 @@ function __play(movement) {
   }
 
   printGameBoard();
-  if (!isInCorrectPath(playerXCoordinate, playerYCoordinate)) {
-    printResettedBoard();
+  if (!isInCorrectPath()) {
+    resetGameBoard();
+    printGameBoard();
   }
 }
 
-function printResettedBoard() {
+function resetGameBoard() {
   playerXCoordinate = 0;
   playerYCoordinate = 0;
   wait(5);
   console.clear();
+}
+
+function handleInvalidInput() {
+  console.clear();
   printGameBoard();
+  console.log(" ‼️ INVALID INPUT  ‼️ ");
+  validatePlayerInput();
 }
 
 function isValidInput(playerInput) {
@@ -104,39 +140,43 @@ function validatePlayerInput() {
   handleInvalidInput();
 }
 
-function handleInvalidInput() {
-  console.clear();
+function gameResult(resultMessage, status) {
+  if (status) {
+    PLAYER_ICON = GRID_TILE;
+    DESTINATION_ICON = "💖";
+    resetGameBoard();
+  }
+
   printGameBoard();
-  console.log(" ‼️ INVALID INPUT  ‼️ ");
-  validatePlayerInput();
-}
-
-function gameResult(resultMessage) {
-  console.clear();
-
-  DESTINATION_ICON = "💖";
-  PLAYER_ICON = GRID_TILE;
-  printResettedBoard();
   console.log(resultMessage);
 }
 
-function CanYouReachHer() {
-  let movement = "";
+function __game(movesLeft, movement) {
 
-  for (let movesLeft = 100; movesLeft > 0; movesLeft--) {
-    __play(movement);
-    console.log("MOVES LEFT:", movesLeft);
-
-    if (isInLastPosition(playerXCoordinate, playerYCoordinate)) {
-      return gameResult("🎊 YOU REACHED HER 🎉");
-    }
-
-    movement = validatePlayerInput();
-    console.clear();
+  if (movesLeft === 0) {
+    return gameResult("YOU LOST HER 💔", 0);
   }
 
-  return gameResult("YOU LOST HER 💔");
+  printPlayerMovements(movement);
+  console.log("MOVES LEFT:", movesLeft);
+
+  if (isInLastPosition(playerXCoordinate, playerYCoordinate)) {
+    return gameResult("🎊 YOU REACHED HER 🎉", 1);
+  }
+
+  movement = validatePlayerInput();
+  console.clear();
+
+  return __game(movesLeft - 1, movement);
 }
+
+function game() {
+  const movement = "";
+  const movesLeft = 100;
+
+  __game(movesLeft, movement);
+}
+
 
 // animation segment
 function wait(delay) {
@@ -162,20 +202,11 @@ function getLoadingAnimation(message) {
   console.clear();
 }
 
-function addEscapeSequences(escapeSequence, times) {
-  let escapeSeqString = "";
-  for (let index = 0; index < times; index++) {
-    escapeSeqString += escapeSequence;
-  }
-
-  return escapeSeqString;
-}
-
 function playAnimation() {
   const message = addEscapeSequences("\n", 13) + addEscapeSequences("\t", 2) +
     "LOADING GAME ASSETS";
   getLoadingAnimation(message);
 }
 
-// playAnimation();
-CanYouReachHer();
+playAnimation();
+game();
