@@ -1,5 +1,5 @@
 function wait(delay) {
-  for (let buffer = 0; buffer < delay; buffer++) {
+  for (let buffer = 0; buffer < 89999999 * delay; buffer++) {
   }
 }
 
@@ -11,14 +11,19 @@ function repeat(times, char) {
 
   string += char + "\n";
   console.log(string);
-  wait(89999999);
+  wait(1);
+}
+
+function sinWave(amplitude, angle, phase) {
+  return amplitude * (Math.sin(angle / 4) + phase);
 }
 
 function wave() {
   let angle = 0;
   while (true) {
-    repeat((30 * (Math.sin(angle/4) + 65)), '🟢');
-    repeat((30 * (Math.cos((angle/4) + 90) + 65)), '🔴');
+
+    repeat(sinWave(30, angle, 65), '🟢');
+    repeat(sinWave(30, -angle, 65), '🔴');
 
     angle += 1;
   }   
