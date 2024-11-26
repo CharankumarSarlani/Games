@@ -1,5 +1,5 @@
-let playerXCoordinate = 9;
-let playerYCoordinate = 8;
+let playerXCoordinate = 0;
+let playerYCoordinate = 0;
 
 function repeat(string, times) {
   if (times === 0) {
