@@ -1,5 +1,5 @@
-let playerXCoordinate = 0;
-let playerYCoordinate = 0;
+let playerXCoordinate = 9;
+let playerYCoordinate = 8;
 
 function repeat(string, times) {
   if (times === 0) {
@@ -14,7 +14,7 @@ function getRandomIntInRange(start, end) {
 }
 
 function getRandomPath() {
-  const PATH1 = "00-01-02-03-13-23-24-34-44-54-64-65d-66-67-68-78-79-89-99";
+  const PATH1 = "00-01-02-03-13-23-24-34-44-54-64-65-66-67-68-78-79-89-99";
   const PATH2 = "00-10-11-12-13-14-15-25-26-36-35-45-55-65-75-85-95-96-97-98-99"
   const PATH3 = "00-10-20-21-31-32-42-52-62-63-73-74-84-83-93-94-95-96-97-98-99"
 
@@ -53,11 +53,11 @@ function isInLastPosition(row, column) {
 let PLAYER_ICON = "🧑‍🦰";
 const GRID_TILE = "🟦";
 const BOMB_ICON = "😹";
-let DESTINATION_ICON = "👩‍🦰";
+let DESTINATION_ICON = "🍟";
 
-function getHorizontalLine(column, row, width, gameBoard, icon) {
+function getHorizontalLine(column, row, length, gameBoard, icon) {
 
-  if (column > width - 2) {
+  if (column > length - 2) {
     icon = isInLastPosition(row, column) ? DESTINATION_ICON : GRID_TILE;
     return icon;
   }
@@ -65,10 +65,10 @@ function getHorizontalLine(column, row, width, gameBoard, icon) {
   if (row === playerXCoordinate && column === playerYCoordinate) {
     icon = isInCorrectPath() ? PLAYER_ICON : BOMB_ICON;
 
-    return icon + getHorizontalLine(column + 1, row, width, gameBoard);
+    return icon + getHorizontalLine(column + 1, row, length, gameBoard);
   }
 
-  return GRID_TILE + getHorizontalLine(column + 1, row, width, gameBoard);
+  return GRID_TILE + getHorizontalLine(column + 1, row, length, gameBoard);
 }
 
 function createGameBoard(height, width) {
@@ -125,7 +125,7 @@ function handleInvalidInput() {
   console.clear();
   printGameBoard();
   console.log(" ‼️ INVALID INPUT  ‼️ ");
-  validatePlayerInput();
+  return validatePlayerInput();
 }
 
 function isValidInput(playerInput) {
@@ -144,13 +144,13 @@ function validatePlayerInput() {
     return playerInput;
   }
 
-  handleInvalidInput();
+  return handleInvalidInput();
 }
 
 function gameResult(resultMessage, status) {
   if (status) {
     PLAYER_ICON = GRID_TILE;
-    DESTINATION_ICON = "💖";
+    DESTINATION_ICON = "🥣";
     resetGameBoard();
   }
 
@@ -161,14 +161,14 @@ function gameResult(resultMessage, status) {
 function __game(movesLeft, movement) {
 
   if (movesLeft === 0) {
-    return gameResult("YOU LOST HER 💔", 0);
+    return gameResult("YOU LOST FOOD", 0);
   }
 
   printPlayerMovements(movement);
   console.log("MOVES LEFT:", movesLeft);
 
   if (isInLastPosition(playerXCoordinate, playerYCoordinate)) {
-    return gameResult("🎊 YOU REACHED HER 🎉", 1);
+    return gameResult("🎊 HURRAY , THANK YOU FOR FEEDING 🎉", 1);
   }
 
   movement = validatePlayerInput();
@@ -183,7 +183,6 @@ function game() {
 
   __game(movesLeft, movement);
 }
-
 
 // animation segment
 function wait(delay) {
@@ -211,7 +210,7 @@ function getLoadingAnimation(message) {
 
 function playAnimation() {
   const message = repeat("\n", 13) + repeat("\t", 2) +
-    "LOADING GAME ASSETS";
+    "LOADING GAME ASSETS ";
   getLoadingAnimation(message);
 }
 
