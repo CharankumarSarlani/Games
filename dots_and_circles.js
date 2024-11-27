@@ -89,44 +89,6 @@ function getSourceTable() {
 }
 
 // ------------------ game segment ------------------
-function playerOneInput() {
-  let playerOneIcon = 'O';
-  const userInput = +prompt("Enter a number [P1] ○:");
-  updatedBoard = validatePlayerInput(userInput, playerOneIcon);
-}
-
-function playerTwoInput() {
-  let playerTwoIcon = 'X';
-  const userInput = +prompt("Enter a number [P2] ●:");
-  updatedBoard = validatePlayerInput(userInput, playerTwoIcon);
-}
-
-function __getPlayerInput(chancesLeft) {
-  console.log("-----------------------------------");
-  playerOneInput();
-  console.log(updatedBoard);
-
-  if (isPlayerWon(updatedBoard)) {
-    console.log("you won");
-    return;
-  }
-
-  if (chancesLeft === 1) {
-    console.log("game lost");
-    return;
-  }
-
-  playerTwoInput();
-  console.log(updatedBoard);
-
-  return __getPlayerInput(chancesLeft - 1);
-}
-
-function play() {
-  let chancesLeft = 5;
-  return __getPlayerInput(chancesLeft);
-}
-
 let key = 0;
 function validatePlayerInput(playerInput, playerIcon) {
   let board = "";
@@ -142,6 +104,18 @@ function validatePlayerInput(playerInput, playerIcon) {
   }
 
   return board;
+}
+
+function playerOneInput() {
+  let playerOneIcon = 'O';
+  const userInput = +prompt("Enter a number [P1] ○:");
+  updatedBoard = validatePlayerInput(userInput, playerOneIcon);
+}
+
+function playerTwoInput() {
+  let playerTwoIcon = 'X';
+  const userInput = +prompt("Enter a number [P2] ●:");
+  updatedBoard = validatePlayerInput(userInput, playerTwoIcon);
 }
 
 function isPlayerWon(updatedBoard) {
@@ -190,6 +164,32 @@ function isPlayerWon(updatedBoard) {
   }
 
   return false;
+}
+
+function __getPlayerInput(chancesLeft) {
+  console.log("-----------------------------------");
+  playerOneInput();
+  console.log(updatedBoard);
+
+  if (isPlayerWon(updatedBoard)) {
+    console.log("you won");
+    return;
+  }
+
+  if (chancesLeft === 1) {
+    console.log("game lost");
+    return;
+  }
+
+  playerTwoInput();
+  console.log(updatedBoard);
+
+  return __getPlayerInput(chancesLeft - 1);
+}
+
+function play() {
+  let chancesLeft = 5;
+  return __getPlayerInput(chancesLeft);
 }
 
 const sourceTable = getSourceTable();
