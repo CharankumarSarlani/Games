@@ -88,6 +88,7 @@ function getSourceTable() {
   return sourceBoard;
 }
 
+// ------------------ game segment ------------------
 function playerOneInput() {
   let playerOneIcon = 'O';
   const userInput = +prompt("Enter a number [P1] ○:");
@@ -100,39 +101,39 @@ function playerTwoInput() {
   updatedBoard = validatePlayerInput(userInput, playerTwoIcon);
 }
 
-function __takeUserInput(chancesLeft) {
+function __getPlayerInput(chancesLeft) {
   console.log("-----------------------------------");
   playerOneInput();
   console.log(updatedBoard);
 
-  if (setIndexes(updatedBoard)) {
+  if (isPlayerWon(updatedBoard)) {
     console.log("you won");
-    return 0;
+    return;
   }
 
   if (chancesLeft === 1) {
     console.log("game lost");
-    return 0;
+    return;
   }
 
   playerTwoInput();
   console.log(updatedBoard);
 
-  return __takeUserInput(chancesLeft - 1);
+  return __getPlayerInput(chancesLeft - 1);
 }
 
-function takeUserInput() {
+function play() {
   let chancesLeft = 5;
-  return __takeUserInput(chancesLeft);
+  return __getPlayerInput(chancesLeft);
 }
 
 let key = 0;
-function validatePlayerInput(userInput, color) {
+function validatePlayerInput(playerInput, playerIcon) {
   let board = "";
   key = 0;
   for (let index = 0; index < updatedBoard.length; index++) {
-    if (userInput == updatedBoard[index]) {
-      board += color;
+    if (playerInput == updatedBoard[index]) {
+      board += playerIcon;
       key = 1;
       continue;
     } else {
@@ -143,7 +144,7 @@ function validatePlayerInput(userInput, color) {
   return board;
 }
 
-function setIndexes(updatedBoard) {
+function isPlayerWon(updatedBoard) {
   const a1 = updatedBoard[89];
   const a2 = updatedBoard[102];
   const a3 = updatedBoard[115];
@@ -156,22 +157,43 @@ function setIndexes(updatedBoard) {
   const c2 = updatedBoard[348];
   const c3 = updatedBoard[361];
 
-  const row1 = a1 === a2 && a1 === a3;
-  const row2 = b1 === b2 && b1 === b3;
-  const row3 = c1 === c2 && c1 === c3;
+  if(a1 === a2 && a1 === a3) {
+    return true;
+  }
 
-  const col1 = a1 === b1 && a1 === c1;
-  const col2 = a2 === b2 && a2 === c2;
-  const col3 = a3 === b3 && a3 === c3;
+  if(b1 === b2 && b1 === b3) {
+    return true;
+  }
 
-  const diagnol1 = a1 === b2 && a1 === c3;
-  const diagnol2 = a3 === b2 && a3 === c1;
+  if(c1 === c2 && c1 === c3) {
+    return true;
+  }
 
-  return row1 || row2 || row3 || col1 || col2 || col3 || diagnol1 || diagnol2;
+  if(a1 === b1 && a1 === c1) {
+    return true;
+  }
+
+  if(a2 === b2 && a2 === c2) {
+    return true;
+  }
+
+  if(a3 === b3 && a3 === c3) {
+    return true;
+  }
+
+  if(a1 === b2 && a1 === c3) {
+    return true;
+  }
+
+  if(a3 === b2 && a3 === c1) {
+    return true;
+  }
+
+  return false;
 }
 
 const sourceTable = getSourceTable();
 let updatedBoard = sourceTable;
 
 console.log(sourceTable);
-takeUserInput();
+play();
