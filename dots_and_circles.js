@@ -70,6 +70,7 @@ function footer() {
   return footer;
 }
 
+// ------------------ game segment ------------------
 let sourceBoard = "";
 function getSourceTable() {
   sourceBoard += header() + "\n";
@@ -88,7 +89,6 @@ function getSourceTable() {
   return sourceBoard;
 }
 
-// ------------------ game segment ------------------
 let key = 0;
 function validatePlayerInput(playerInput, playerIcon) {
   let board = "";
